@@ -1,6 +1,6 @@
 # Cocktails – Android-PWA
 
-**Version 1.0.0 · Erste nutzbare Fassung**
+**Version 1.0.1 · Geschmacksprofil mit fünf Stufen**
 
 Eigenständige Progressive Web App ohne Build-Schritt und ohne externe JavaScript-Bibliotheken. Das App-Icon zeigt ein Martiniglas mit Olive am Zahnstocher. Die Oberfläche ist auf Android-Smartphones ausgelegt.
 
@@ -8,7 +8,7 @@ Eigenständige Progressive Web App ohne Build-Schritt und ohne externe JavaScrip
 
 - Dashboard mit Cocktail des Tages, Statistiken und zuletzt angelegten Cocktails
 - Cocktails anlegen, bearbeiten, als Favoriten markieren, löschen, suchen, sortieren und filtern
-- Sechs Cocktailkategorien, Glasformen, Basisspirituosen, Zubereitungsarten, Zubereitungsschritte, Geschmacksprofil, Fotos und Notizen
+- Sechs Cocktailkategorien, Glasformen, Basisspirituosen, Zubereitungsarten, Zubereitungsschritte, **sechs Geschmackswerte auf einer Skala von 1 bis 5**, Fotos und Notizen
 - Lokale Entwürfe, Pflichtfeldprüfung und Speicherstatus
 - Zutatenverwaltung mit zehn Kategorien, Bestandsstatus und direkten, gegenseitigen Ersatzverknüpfungen
 - Zutaten- und Garniturenauswahl mit Mehrfachvorkommen, Mengen und Einheiten; vertikale Sortierung per Pfeiltasten oder Ziehgriff
@@ -19,6 +19,14 @@ Eigenständige Progressive Web App ohne Build-Schritt und ohne externe JavaScrip
 - Installierbare, offlinefähige PWA mit Service Worker und lokaler IndexedDB
 
 **Wichtig:** Alle privaten Rezepte, Zutaten und Bestandsinformationen liegen zunächst nur lokal auf dem jeweiligen Gerät. Es gibt keine automatische Synchronisierung privater Daten zwischen Geräten. Die öffentliche Cocktailkarte veröffentlicht ausschließlich die dafür ausgewählten Rezeptangaben.
+
+## Update auf Version 1.0.1
+
+Das Geschmacksprofil hat jetzt bei allen sechs Kriterien **fünf statt zehn Bewertungsstufen**. In der Cocktail-Detailansicht, dem Bearbeitungsformular und der Gäste-Cocktailkarte werden fünf Segmente angezeigt. Einzelne Kriterien können weiterhin **„Unbewertet“** sein.
+
+Bereits lokal gespeicherte Bewertungen aus Version 1.0.0 werden beim ersten Öffnen **einmalig** umgerechnet: **1–2 → 1, 3–4 → 2, 5–6 → 3, 7–8 → 4, 9–10 → 5**. Bestehende Cocktaildaten und Fotos bleiben erhalten. Die Umstellung gilt auch beim Import älterer ZIP-Sicherungen. Öffentliche Cocktailkarten zeigen ebenfalls fünf Segmente; bei einer erneut veröffentlichten Karte wird die neue Skala gespeichert.
+
+Für das Update auf GitHub Pages die bestehenden App-Dateien durch die Dateien dieses Pakets ersetzen (insbesondere `app.js`, `guest.js`, `sw.js`), **nicht** den Browser-Speicher löschen. Die neue Service-Worker-Version erkennt das Update.
 
 ## Installation über GitHub Pages
 
