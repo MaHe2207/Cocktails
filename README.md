@@ -1,6 +1,6 @@
 # Cocktails – Android-PWA
 
-**Version 1.0.1 · Geschmacksprofil mit fünf Stufen**
+**Version 1.0.2 · Cocktailkarte einspaltig · Geschmacksprofil mit fünf Stufen**
 
 Eigenständige Progressive Web App ohne Build-Schritt und ohne externe JavaScript-Bibliotheken. Das App-Icon zeigt ein Martiniglas mit Olive am Zahnstocher. Die Oberfläche ist auf Android-Smartphones ausgelegt.
 
@@ -20,7 +20,13 @@ Eigenständige Progressive Web App ohne Build-Schritt und ohne externe JavaScrip
 
 **Wichtig:** Alle privaten Rezepte, Zutaten und Bestandsinformationen liegen zunächst nur lokal auf dem jeweiligen Gerät. Es gibt keine automatische Synchronisierung privater Daten zwischen Geräten. Die öffentliche Cocktailkarte veröffentlicht ausschließlich die dafür ausgewählten Rezeptangaben.
 
-## Update auf Version 1.0.1
+## Update auf Version 1.0.2
+
+Die **Gäste-Cocktailkarte** zeigt alle Cocktails jetzt untereinander in **einer einzigen Spalte**, unabhängig von der Bildschirmbreite. Die Cocktails-Übersicht in der Verwaltungs-App behält ihre bisherige Raster-/Listenansicht. Alle vorhandenen Cocktails, Bilder und gespeicherten Bewertungen bleiben unverändert.
+
+Für die Aktualisierung eines bestehenden GitHub-Pages-Projekts genügen die Dateien `styles.css`, `sw.js`, `app.js` und `README.md` aus dem Paket. **Bitte keine Website-/App-Daten löschen.** Die neue Service-Worker-Kennung ermöglicht das Einspielen der aktualisierten Styles.
+
+## Vorheriges Update auf Version 1.0.1
 
 Das Geschmacksprofil hat jetzt bei allen sechs Kriterien **fünf statt zehn Bewertungsstufen**. In der Cocktail-Detailansicht, dem Bearbeitungsformular und der Gäste-Cocktailkarte werden fünf Segmente angezeigt. Einzelne Kriterien können weiterhin **„Unbewertet“** sein.
 
