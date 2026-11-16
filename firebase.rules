@@ -1,25 +1,37 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // ONLY THE PUBLIC COCKTAIL CARD. Never expose local collection/stock records.
+    // Besitzerkonto von Cocktails (festgelegte Firebase Authentication UID).
+    function isOwner() {
+      return request.auth != null && request.auth.uid == 'ijLHP3FHxOejdSCiYTvCciqzRQo2';
+    }
+
+    // Private Cocktailbar: Nur das festgelegte Benutzerkonto.
+    match /users/{userId}/{document=**} {
+      allow read, write: if isOwner() && userId == request.auth.uid;
+    }
+
+    // Gäste dürfen veröffentlichte Karten lesen, aber nichts verändern.
     match /publicCards/{cardId} {
       allow get: if true;
       allow list: if false;
-      allow create: if request.auth != null
+      allow create: if isOwner()
         && request.resource.data.ownerUid == request.auth.uid;
-      allow update: if request.auth != null
+      allow update: if isOwner()
         && resource.data.ownerUid == request.auth.uid
         && request.resource.data.ownerUid == resource.data.ownerUid;
-      allow delete: if request.auth != null
+      allow delete: if isOwner()
         && resource.data.ownerUid == request.auth.uid;
 
       match /items/{itemId} {
         allow get: if true;
         allow list: if false;
-        allow create, update, delete: if request.auth != null
+        allow create, update, delete: if isOwner()
           && get(/databases/$(database)/documents/publicCards/$(cardId)).data.ownerUid == request.auth.uid;
       }
     }
+
+    // Alle sonstigen Zugriffe sind untersagt.
     match /{document=**} {
       allow read, write: if false;
     }

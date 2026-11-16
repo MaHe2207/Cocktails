@@ -1,6 +1,6 @@
 # Cocktails – Android-PWA
 
-**Version 1.0.2 · Cocktailkarte einspaltig · Geschmacksprofil mit fünf Stufen**
+**Version 1.1.1 · Firebase-Synchronisierung für cocktails-fd151 (Spark)**
 
 Eigenständige Progressive Web App ohne Build-Schritt und ohne externe JavaScript-Bibliotheken. Das App-Icon zeigt ein Martiniglas mit Olive am Zahnstocher. Die Oberfläche ist auf Android-Smartphones ausgelegt.
 
@@ -18,7 +18,21 @@ Eigenständige Progressive Web App ohne Build-Schritt und ohne externe JavaScrip
 - ZIP-Datensicherung und Wiederherstellung einschließlich Fotos
 - Installierbare, offlinefähige PWA mit Service Worker und lokaler IndexedDB
 
-**Wichtig:** Alle privaten Rezepte, Zutaten und Bestandsinformationen liegen zunächst nur lokal auf dem jeweiligen Gerät. Es gibt keine automatische Synchronisierung privater Daten zwischen Geräten. Die öffentliche Cocktailkarte veröffentlicht ausschließlich die dafür ausgewählten Rezeptangaben.
+**Wichtig:** Ohne Anmeldung funktioniert die App lokal. Nach Einrichtung von Firebase werden private Cocktails, Zutaten, Bilder, Entwürfe und Einstellungen zwischen Geräten mit demselben Firebase-Konto synchronisiert. Die öffentlich veröffentlichte Cocktailkarte enthält weiterhin nur die bewusst ausgewählten Informationen.
+
+## Update auf Version 1.1.0 – Firebase-Speicherung und Synchronisierung
+
+- Private Cloud-Sicherung von Cocktails, Zutaten, Entwürfen, Fotos, Bestandsstatus, Ersatzverknüpfungen und Einstellungen über Cloud Firestore.
+- Automatischer Abgleich kurz nach Änderungen, beim Öffnen der App und während die App aktiv ist; zusätzlich „Jetzt synchronisieren“ in den Einstellungen.
+- Fotos werden **ohne Firebase Storage** platzsparend als in Blöcke aufgeteilte Firestore-Dokumente gespeichert. Bereits synchronisierte Bilder werden bei normalen Textänderungen nicht erneut hochgeladen.
+- **Konfliktschutz:** Falls zwei Geräte unabhängig voneinander widersprüchliche Änderungen vorgenommen haben, fragt die App, ob die lokale oder die Cloud-Version gelten soll. Vor dieser Wahl ein ZIP-Backup erstellen.
+- Weiterhin vollständig offlinefähige lokale Datenbank; Cloud-Fehler verändern deine lokalen Daten nicht.
+- Öffentliche Cocktailkarte mit bestehendem Link-/QR-Code-System. Die Cocktailkarte wird weiterhin bewusst durch „Cocktailkarte veröffentlichen“ aktualisiert.
+- Die bisherigen sechs Geschmacksprofile bleiben auf fünf Stufen; die Gäste-Cocktailkarte bleibt einspaltig.
+
+Für ein vorhandenes GitHub-Pages-Repository **alle Dateien** dieser Version übernehmen (darunter die neue `cloud.js`, aktualisierte `app.js`, `index.html` und `sw.js`). **Keine Website-Daten oder App-Daten löschen.** Unbedingt die neue Datei `firebase.rules` in der Firebase-Console veröffentlichen, sonst wird die private Synchronisierung abgewiesen.
+
+Das Upgrade setzt keinen Firestore-Zugang voraus; ohne Firebase laufen alle bisherigen lokalen Funktionen weiter.
 
 ## Update auf Version 1.0.2
 
@@ -54,22 +68,28 @@ Für Tests am Computer kann die App über einen lokalen HTTP-Server geöffnet we
 - Über **Vorschau** die lokale Gästekarte ansehen. Auf ihr stehen weder Bestand, Mixbarkeit, Ersatzprodukte, interne Notizen noch Zubereitungsschritte.
 - In **Einstellungen → Daten & Sicherung** regelmäßig die ZIP-Datei exportieren.
 
-## Öffentliche Cocktailkarte: einmalige Firebase-Einrichtung
+## Firebase ist bereits mit deinem Projekt verbunden
 
-Ein öffentlich erreichbarer Link und QR-Code benötigen einen gemeinsam zugänglichen Onlinespeicher. Eine Gäste-App kann nicht auf die IndexedDB eines anderen Smartphones zugreifen. Die App unterstützt dafür optional **Firebase Authentication + Cloud Firestore**, ohne dass die private Cocktailverwaltung davon abhängig wird.
+Diese Version ist **fest für `cocktails-fd151` konfiguriert**. Du musst in den App-Dateien keinen Firebase-Code bearbeiten. Die mitgelieferte `firebase.rules` enthält bereits die veröffentlichte Besitzer-UID.
 
-1. In der Firebase Console ein Projekt erstellen.
-2. **Authentication → Sign-in method → E-Mail/Passwort** aktivieren.
-3. **Firestore Database** für das Projekt einrichten.
-4. Im Firestore-Reiter **Rules** den vollständigen Inhalt der beigefügten Datei `firebase.rules` einfügen und veröffentlichen. Diese Regeln gestatten Gästen nur das Lesen veröffentlichter Karten, während Änderungen eine Anmeldung als Karteninhaber erfordern. Andere Dokumentpfade sind gesperrt.
-5. Unter **Projekteinstellungen → Allgemein → Web-App** eine Firebase-Web-App registrieren (falls noch nicht geschehen) und die Werte `projectId` und `apiKey` aus der Web-Konfiguration ablesen.
-6. In **Cocktails → Einstellungen → App & Installation** Projekt-ID, Web-API-Key, E-Mail und Passwort eingeben. Über **Konto erstellen** ein eigenes Firebase-Konto registrieren oder über **Anmelden** ein vorhandenes Konto nutzen.
-7. Unter **Cocktails → Cocktailkarte** die gewünschten Cocktails auswählen und **Cocktailkarte veröffentlichen** antippen. Ein Internetzugang ist hierfür nötig.
-8. Danach in **Einstellungen → App & Installation → Cocktailkarte** den öffentlichen Link kopieren oder den QR-Code öffnen.
+**Schritte:**
 
-**Bei Änderungen an der Cocktailkarte erneut „Cocktailkarte veröffentlichen“ antippen.** Durch die lokale Speicherung werden Änderungen nicht automatisch online hochgeladen. Gäste benötigen keine Anmeldung.
+1. Vor dem GitHub-Update ein ZIP-Backup in der bisherigen Cocktails-App erstellen.
+2. Die Dateien dieses Pakets in dasselbe GitHub-Pages-Verzeichnis hochladen und bestehende App-Dateien ersetzen. Website- und App-Daten nicht löschen.
+3. In der aktualisierten App **Einstellungen → App & Installation** öffnen.
+4. Beim Firebase-Bereich nur noch die **E-Mail und das Passwort deines bereits angelegten Firebase-Benutzers** eingeben, dann **Anmelden** drücken.
+5. Die erste Cloud-Synchronisierung kontrollieren. Auf weiteren Geräten dieselbe Anmeldung verwenden.
+6. Die Cocktailkarte unter **Cocktails → Cocktailkarte** auswählen und veröffentlichen. Link/QR-Code stehen unter **Einstellungen → App & Installation** bereit.
 
-Der API-Key einer Firebase-Web-App ist kein geheimes Serverpasswort. **Die Firestore-Sicherheitsregeln sind dennoch zwingend nötig.** Das Firebase-Anmeldepasswort wird nicht in der App-Datenbank gespeichert. Ein Authentifizierungs-Refresh-Token wird lokal gespeichert, damit du nicht bei jedem Aufruf erneut das Passwort eingeben musst; dieses Token wird aus ZIP-Backups ausgeschlossen.
+Private Daten bleiben lokal offline nutzbar. Synchronisierung kann bei Änderungen von zwei Geräten einen Konfliktdialog anzeigen. Ein Cloud-Download ersetzt lokal gespeicherte Daten nur nach bewusster Entscheidung. Erstelle daher regelmäßig ZIP-Backups.
+
+**Spark:** Nur Firebase Authentication und Cloud Firestore werden verwendet. Kein Firebase Storage, keine Cloud Functions, kein Blaze-Upgrade erforderlich. Firestore-Lese-/Schreibvorgänge und Speicher sind begrenzt; bei Erreichen des Gratis-Kontingents kann die Cloud-Funktion aussetzen.
+
+Weitere Anweisungen: **`FIREBASE-EINRICHTUNG.md`**.
+
+### Cloud-Fotos
+
+Lokale Bilder bleiben in ihrer vorhandenen Auflösung erhalten. Beim ersten Cloud-Upload werden ihre Daten in kleinere, geschützte Firestore-Dokumente zerlegt und später identisch wieder zusammengesetzt. So bleibt die App ohne Firebase Cloud Storage im Spark-Tarif nutzbar. Auch hier gelten das Firestore-Speicher- und das tägliche Zugriffskontingent.
 
 ### Größenhinweis für Fotos
 
@@ -92,11 +112,12 @@ Fotos werden in der lokalen App auf maximal 1024 × 1024 Pixel in WebP verarbeit
 | `styles.css` | Dark-Bar-Design, responsive Layouts |
 | `karte.html` + `guest.js` | Öffentliche Gästeansicht und lokale Vorschau |
 | `qr.js` | QR-Code-Erzeugung ohne externe Dienste |
+| `cloud.js` | Private Cloud-Snapshots, Foto-Blöcke und Konfliktprüfung über Firestore REST |
 | `zip.js` | ZIP-Export und -Import ohne externe Bibliotheken |
 | `manifest.webmanifest`, `sw.js` | PWA-Installation und Offline-Caching |
 | `icon.svg`, `icon-192.png`, `icon-512.png` | Logo und Android-App-Icons |
-| `firebase.rules` | Sicherheitsregeln für die veröffentlichte Karte |
+| `firebase.rules` | Besitzergebundene Sicherheitsregeln für private Cloud und öffentliche Karte |
 
 ## Stand und Hinweise
 
-Dies ist eine erste funktionsfähige Version, kein bereits eingerichteter Onlinedienst. Die lokale App ist ohne Firebase einsatzbereit, aber ein **öffentlicher Link kann erst nach GitHub-Pages-Veröffentlichung und Firebase-Einrichtung** funktionieren. Die Firebase-Veröffentlichung kann in dieser Entwicklungsumgebung ohne deine Projektkonfiguration nicht gegen ein echtes Firebase-Projekt getestet werden.
+Die App ist fertig für die Firebase-Einrichtung, aber noch **nicht mit deinem persönlichen Firebase-Projekt verbunden**. Die Cloud-Anmeldung und der öffentliche Link werden erst nach Einrichtung im eigenen Firebase-Projekt verfügbar. Die neue Cloud-Synchronisierung konnte gegen eine simulierte Firestore-Datenbank getestet werden, nicht gegen deinen realen Firebase-Zugang.
