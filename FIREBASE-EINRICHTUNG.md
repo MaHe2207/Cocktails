@@ -1,6 +1,6 @@
 # Cocktails – Firebase-Verbindung für dein Projekt
 
-**Version 1.1.1 – fertig konfiguriert für `cocktails-fd151`**
+**Version 1.1.2 – fertig konfiguriert für `cocktails-fd151`**
 
 Deine Firebase-Webkonfiguration ist **bereits in der PWA enthalten**. Du musst keine Datei editieren und weder Projekt-ID noch Web-API-Key eintippen.
 
@@ -14,7 +14,7 @@ Deine Firebase-Webkonfiguration ist **bereits in der PWA enthalten**. Du musst k
 ## App-Update bei GitHub
 
 1. Vorher in der bisherigen Cocktails-App unter **Einstellungen → Daten & Sicherung** ein ZIP-Backup erstellen.
-2. ZIP **`Cocktails-PWA-v1.1.1-Firebase-fertig.zip`** entpacken.
+2. ZIP **`Cocktails-PWA-v1.1.2.zip`** entpacken.
 3. **Alle Dateien aus dem Unterordner `cocktails-pwa`** in dasselbe GitHub-Repository und denselben Pages-Ordner hochladen, in dem deine App bereits liegt. Vorhandene Dateien ersetzen, `index.html` muss an der Pages-Adresse erreichbar bleiben.
 4. Die GitHub-Pages-Adresse bzw. installierte Android-PWA öffnen. Falls die alte Version noch sichtbar ist, App vollständig schließen und neu starten; **keine Website- oder App-Daten löschen**.
 

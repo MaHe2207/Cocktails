@@ -1,6 +1,6 @@
 # Cocktails – Android-PWA
 
-**Version 1.1.1 · Firebase-Synchronisierung für cocktails-fd151 (Spark)**
+**Version 1.1.2 · Firebase-Synchronisierung für cocktails-fd151 (Spark)**
 
 Eigenständige Progressive Web App ohne Build-Schritt und ohne externe JavaScript-Bibliotheken. Das App-Icon zeigt ein Martiniglas mit Olive am Zahnstocher. Die Oberfläche ist auf Android-Smartphones ausgelegt.
 
@@ -8,7 +8,7 @@ Eigenständige Progressive Web App ohne Build-Schritt und ohne externe JavaScrip
 
 - Dashboard mit Cocktail des Tages, Statistiken und zuletzt angelegten Cocktails
 - Cocktails anlegen, bearbeiten, als Favoriten markieren, löschen, suchen, sortieren und filtern
-- Sechs Cocktailkategorien, Glasformen, Basisspirituosen, Zubereitungsarten, Zubereitungsschritte, **sechs Geschmackswerte auf einer Skala von 1 bis 5**, Fotos und Notizen
+- Sechs Cocktailkategorien, Glasformen, Basisspirituosen, Zubereitungsarten, Zubereitungsschritte, **sechs Geschmackswerte auf einer Skala von 0 bis 5**, Fotos und Notizen
 - Lokale Entwürfe, Pflichtfeldprüfung und Speicherstatus
 - Zutatenverwaltung mit zehn Kategorien, Bestandsstatus und direkten, gegenseitigen Ersatzverknüpfungen
 - Zutaten- und Garniturenauswahl mit Mehrfachvorkommen, Mengen und Einheiten; vertikale Sortierung per Pfeiltasten oder Ziehgriff
@@ -121,3 +121,14 @@ Fotos werden in der lokalen App auf maximal 1024 × 1024 Pixel in WebP verarbeit
 ## Stand und Hinweise
 
 Die App ist fertig für die Firebase-Einrichtung, aber noch **nicht mit deinem persönlichen Firebase-Projekt verbunden**. Die Cloud-Anmeldung und der öffentliche Link werden erst nach Einrichtung im eigenen Firebase-Projekt verfügbar. Die neue Cloud-Synchronisierung konnte gegen eine simulierte Firestore-Datenbank getestet werden, nicht gegen deinen realen Firebase-Zugang.
+
+
+## Update v1.1.2 – Geschmacksprofil und Kategorie-Schnellfilter
+
+- Alle sechs Geschmacksmerkmale bleiben in der Cocktail-Detailansicht und auf der öffentlichen Cocktailkarte sichtbar, auch wenn sie noch nicht bewertet wurden ("Unbewertet").
+- Jedes Merkmal kann ausdrücklich auf **0/5** gesetzt werden. Dieser Wert ist eine echte Bewertung und unterscheidet sich von "Unbewertet". Im Editor gibt es eine eigene 0-Schaltfläche sowie "Unbewertet" zum Zurücksetzen. Bestehende Bewertungen bleiben erhalten.
+- Bei der Sortierung zählt 0 als gültiger niedrigster Wert, während "Unbewertet" stets zuletzt erscheint.
+- In der Cocktailübersicht und auf der öffentlichen einspaltigen Cocktailkarte gibt es eine horizontal scrollbare Schnellfilter-Leiste mit **Alle** und den sechs Hauptkategorien. Die Gäste benötigen dafür kein Benutzerkonto.
+- Der Kategorie-Schnellfilter in der App wirkt gemeinsam mit der bisherigen Suche, den Schnellfiltern und den erweiterten Filtern. "Alle Filter zurücksetzen" setzt auch diesen Kategorie-Schnellfilter zurück.
+- Nach dem Hochladen auf GitHub Pages müssen vorhandene PWA-Instanzen gegebenenfalls vollständig geschlossen und neu geöffnet werden, damit der neue Service Worker aktiv wird. Die bestehende IndexedDB und Firebase-Verknüpfung dürfen nicht gelöscht werden.
+- Nach einer Änderung des Geschmacksprofils eines Cocktails auf der bereits veröffentlichten Cocktailkarte muss die Karte erneut veröffentlicht werden, damit Gäste die neuen Werte sehen. Die reinen Kategorie-Schnellfilter erscheinen nach dem App-Update auch ohne erneute Veröffentlichung.
